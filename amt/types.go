@@ -1,5 +1,11 @@
 package amt
 
+import (
+// "amtgo/database"
+)
+
+//type Laststate = database.Laststate
+
 // Laststate represents state reported by AMT, plus open TCP port
 type Laststate struct {
 	ID          int    `json:"id"`
@@ -92,12 +98,11 @@ const (
 	stateCycleOffHard              = 9
 	stateMasterBusReset            = 10
 	stateNMI                       = 11
-	stateNotApplicable             = 12
-	stateOffSoftGraceful           = 13
-	stateOffHardGraceful           = 14
-	stateMasterBusResetGraceful    = 15
-	statePowerCycleOffSoftGraceful = 16
-	statePowerCycleOffHardGraceful = 17
+	stateOffSoftGraceful           = 12
+	stateOffHardGraceful           = 13
+	stateMasterBusResetGraceful    = 14
+	statePowerCycleOffSoftGraceful = 15
+	statePowerCycleOffHardGraceful = 16
 	stateDiagnosticInterrupt       = 18
 )
 
@@ -119,19 +124,19 @@ var cmdMap = map[string]cmdinfo{
 }
 
 var powerstateTextMap = map[int]string{
-	stateUnknown:                   "Unknown",
-	stateOther:                     "Other",
-	stateOn:                        "On",
-	stateSleepLight:                "Sleep-Light",
-	stateSleepDeep:                 "Sleep-Deep",
-	stateCycleOffSoft:              "Cycle-Off-Soft",
-	stateOffHard:                   "Off-Hard",
-	stateHibernate:                 "Hibernate",
-	stateOffSoft:                   "Off-Soft",
-	stateCycleOffHard:              "Cycle-Off-Hard",
-	stateMasterBusReset:            "Master-Bus-Reset",
-	stateNMI:                       "NMI",
-	stateNotApplicable:             "Not-Applicable",
+	stateUnknown:        "Unknown",
+	stateOther:          "Other",
+	stateOn:             "On",
+	stateSleepLight:     "Sleep-Light",
+	stateSleepDeep:      "Sleep-Deep",
+	stateCycleOffSoft:   "Cycle-Off-Soft",
+	stateOffHard:        "Off-Hard",
+	stateHibernate:      "Hibernate",
+	stateOffSoft:        "Off-Soft",
+	stateCycleOffHard:   "Cycle-Off-Hard",
+	stateMasterBusReset: "Master-Bus-Reset",
+	stateNMI:            "NMI",
+	//	stateNotApplicable:             "Not-Applicable",
 	stateOffSoftGraceful:           "Off-Soft-Graceful",
 	stateOffHardGraceful:           "Off-Hard-Graceful",
 	stateMasterBusResetGraceful:    "Master-Bus-Reset-Graceful",

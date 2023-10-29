@@ -5,7 +5,7 @@ var mysqlSchema = `
 SET foreign_key_checks = 0;
 
 -- notifications: Short messages for dashboard
-CREATE TABLE notification (
+CREATE TABLE IF NOT EXISTS notification (
   id                INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY,
   tstamp            INTEGER,
   user_id           INT          NOT NULL,
@@ -17,7 +17,7 @@ CREATE TABLE notification (
 CREATE TRIGGER tstampTrigger BEFORE INSERT ON notification FOR EACH ROW SET new.tstamp = UNIX_TIMESTAMP(NOW());
 
 -- organizational units / rooms
-CREATE TABLE ou (
+CREATE TABLE IF NOT EXISTS ou (
   id                INTEGER      NOT NULL AUTO_INCREMENT PRIMARY KEY,
   parent_id         INTEGER      NULL,
   optionset_id      INT,
@@ -31,7 +31,7 @@ CREATE TABLE ou (
 );
 
 -- clients to be placed into ous
-CREATE TABLE user (
+CREATE TABLE IF NOT EXISTS user (
   id                INTEGER      NOT NULL AUTO_INCREMENT PRIMARY KEY,
   ou_id             INTEGER      NOT NULL,    -- currently only one related (top) OU; no distinct permissions
   is_enabled        INTEGER      DEFAULT 1,
@@ -46,7 +46,7 @@ CREATE TABLE user (
 );
 
 -- clients to be placed into ous
-CREATE TABLE host (
+CREATE TABLE IF NOT EXISTS host (
   id                INTEGER      NOT NULL AUTO_INCREMENT PRIMARY KEY,
   ou_id             INTEGER      NOT NULL,
   hostname          VARCHAR(64)  NOT NULL,
@@ -56,7 +56,7 @@ CREATE TABLE host (
 );
 
 -- state logging of hosts. log occurs upon state change.
-CREATE TABLE statelog (
+CREATE TABLE IF NOT EXISTS statelog (
   host_id           INTEGER      NOT NULL AUTO_INCREMENT PRIMARY KEY,
   state_begin       INTEGER,
   open_port         INTEGER      DEFAULT NULL,
@@ -75,7 +75,7 @@ CREATE VIEW logday AS
 
 
 -- amt(c) option sets
-CREATE TABLE optionset (
+CREATE TABLE IF NOT EXISTS optionset (
   id                INTEGER      NOT NULL AUTO_INCREMENT PRIMARY KEY,
   name              VARCHAR(128) NOT NULL,
   description       VARCHAR(128),
@@ -91,7 +91,7 @@ CREATE TABLE optionset (
 );
 
 -- monitoring / scheduled tasks / interactive jobs
-CREATE TABLE job (
+CREATE TABLE IF NOT EXISTS job (
   id                INTEGER      NOT NULL AUTO_INCREMENT PRIMARY KEY,
   job_type          INTEGER,     -- 1=interactive, 2=scheduled, 3=monitor
   job_status        INTEGER      DEFAULT '0',
@@ -116,6 +116,16 @@ CREATE TABLE job (
   FOREIGN KEY(user_id) REFERENCES user(id)
 );
 
+CREATE TABLE IF NOT EXISTS laststate (
+  id INTEGER,
+  host_id INTEGER,
+  hostname TEXT,
+  state_begin INTEGER,
+  open_port INTEGER,
+  state_amt INTEGER,
+  state_http INTEGER,
+  usermessage TEXT,
+);
 
 --
 -- Minimal initial set of records to let amtc-web look ok after initial install

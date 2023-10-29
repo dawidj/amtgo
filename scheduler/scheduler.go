@@ -13,8 +13,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/schnoddelbotz/amtgo/amt"
-	"github.com/schnoddelbotz/amtgo/database"
+	"amtgo/amt"
+	"amtgo/database"
 )
 
 // Ember submits Jobs differently from database.Job model. Work-around:
@@ -170,7 +170,8 @@ func MonitoringRunloop(verbose bool) {
 	// limit concurrent threads to...
 	concurrency := 200
 	for {
-		time.Sleep(15 * time.Second)
+		//	time.Sleep(15 * time.Second)
+		time.Sleep(2 * time.Minute)
 		if verbose {
 			log.Println("Host monitoring triggering scans...")
 		}

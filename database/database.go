@@ -6,17 +6,14 @@ import (
 	"fmt"
 	"io"
 	"log"
-	"os"
 	"strconv"
 	"strings"
 
 	"github.com/jmoiron/sqlx"
-	// import SQLite 3 driver
-	_ "github.com/mattn/go-sqlite3"
 	// import MySQL driver
 	_ "github.com/go-sql-driver/mysql"
 
-	"github.com/schnoddelbotz/amtgo/amt"
+	"amtgo/amt"
 )
 
 var db *sqlx.DB
@@ -44,7 +41,7 @@ func OpenDB() {
 	case "mysql":
 		OpenDBMySQL()
 	default:
-		OpenDBSQlite()
+		OpenDBMySQL()
 	}
 }
 
@@ -54,29 +51,8 @@ func InitDB() {
 	case "mysql":
 		InitDBMysql()
 	default:
-		InitDBSQlite()
+		InitDBMysql()
 	}
-}
-
-// OpenDBSQlite opens SQLite database
-func OpenDBSQlite() {
-	// try opening database file
-	var err error
-	// if verbose {
-	//  log.Printf("Using database file: %s", dbFile)
-	// }
-	db, err = sqlx.Open("sqlite3", DbFile+"?cache=shared&mode=rwc&_busy_timeout=9999999")
-	if err != nil {
-		log.Fatal(err)
-	}
-	db.SetMaxOpenConns(1)
-
-	// initialize database with default schema
-	if _, err := os.Stat(DbFile); os.IsNotExist(err) {
-		InitDBSQlite()
-	}
-
-	db.Exec("PRAGMA foreign_keys = ON")
 }
 
 // OpenDBMySQL opens MySQL database
@@ -98,15 +74,6 @@ func OpenDBMySQL() {
 	if len(optionSets) == 0 {
 		InitDBMysql()
 	}
-}
-
-// InitDBSQlite initializes DB schema
-func InitDBSQlite() {
-	_, err := db.Exec(sqliteSchema)
-	if err != nil {
-		log.Fatalf("Fatal error with %s: %s", DbFile, err)
-	}
-	log.Printf("Successfully initialized new DB: %s", DbFile)
 }
 
 // InitDBMysql initializes DB schema
@@ -391,6 +358,25 @@ func DeleteJob(id int) (string, bool) {
 		return `{"errors":[{"detail": "` + err.Error() + `"}]}`, false
 	}
 	return "{}", true
+}
+
+// DeleteJob deletes a single job
+func UpdateLaststate(laststate Laststate) {
+	var err error
+	laststate = Laststate{}
+
+	err = db.Get(&laststate, "SELECT HostID FROM Laststate WHERE HostID=? LIMIT 1", laststate.HostID)
+	if err == nil {
+		_, err := db.Exec("DELETE FROM Laststate WHERE HostID = ?", laststate.HostID)
+		if err != nil {
+			fmt.Println(err.Error)
+		}
+	}
+	_, err = db.Exec(
+		"INSERT INTO Laststate (id, host_id, hostname, state_begin, open_port, state_amt, state_http, usermessage) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+		laststate.ID, laststate.HostID, laststate.Hostname, laststate.StateBegin, laststate.OpenPort, laststate.StateAMT, laststate.StateHTTP, laststate.Usermessage,
+	)
+	log.Println(err)
 }
 
 // CREATE

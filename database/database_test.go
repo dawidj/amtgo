@@ -8,7 +8,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/schnoddelbotz/amtgo/amt"
+	amt "amtgo/amt"
 )
 
 func init() {

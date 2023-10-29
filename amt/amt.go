@@ -9,7 +9,7 @@ import (
 	"strconv"
 	"time"
 
-	dac "github.com/schnoddelbotz/amtgo/amt/digest_auth_client"
+	dac "amtgo/amt/digest_auth_client"
 )
 
 // Verbose bool controls verbosity
@@ -189,7 +189,8 @@ func SequentialCommand(cmd string, hosts []string, opt Optionset, delay float64)
 func ProbeHostPorts(host string, ports []int) (openPort int) {
 	openPort = 0
 	for _, port := range ports {
-		conn, err := net.DialTimeout("tcp", fmt.Sprintf("%s:%d", host, port), 2*time.Second)
+		//	Timeout from 2 Seconds to 10
+		conn, err := net.DialTimeout("tcp", fmt.Sprintf("%s:%d", host, port), 10*time.Second)
 		if err == nil {
 			openPort = port
 			conn.Close()

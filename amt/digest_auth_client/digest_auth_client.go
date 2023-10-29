@@ -62,7 +62,12 @@ func (dr *DigestRequest) Execute() (resp *http.Response, err error) {
 		tr := &http.Transport{
 			DialTLS: func(network, addr string) (net.Conn, error) {
 				return tls.DialWithDialer(&net.Dialer{Timeout: dr.Timeout}, network, addr,
-					&tls.Config{MaxVersion: tls.VersionTLS10, InsecureSkipVerify: true})
+					&tls.Config{
+						MinVersion: tls.VersionTLS12,
+						MaxVersion: tls.VersionTLS12,
+						//	TLS_RSA_WITH_AES_128_GCM_SHA256, 128-Bit-Schlüssel, TLS 1.2
+						//	MaxVersion: tls.VersionTLS10,
+						InsecureSkipVerify: true})
 			},
 			IdleConnTimeout: 5 * time.Second,
 			DialContext: (&net.Dialer{
@@ -82,10 +87,17 @@ func (dr *DigestRequest) Execute() (resp *http.Response, err error) {
 			if !ok {
 				panic("failed to parse root certificate")
 			}
-			tr.TLSClientConfig = &tls.Config{MaxVersion: tls.VersionTLS10, RootCAs: roots}
+			tr.TLSClientConfig = &tls.Config{
+				//	MaxVersion: tls.VersionTLS10,
+				RootCAs: roots}
 			tr.DialTLS = func(network, addr string) (net.Conn, error) {
 				return tls.DialWithDialer(&net.Dialer{Timeout: dr.Timeout}, network, addr,
-					&tls.Config{MaxVersion: tls.VersionTLS10, InsecureSkipVerify: false, RootCAs: roots})
+					&tls.Config{
+						MinVersion: tls.VersionTLS12,
+						MaxVersion: tls.VersionTLS12,
+						//	MaxVersion: tls.VersionTLS10,
+						InsecureSkipVerify: false,
+						RootCAs:            roots})
 			}
 		}
 		client.Transport = tr
@@ -171,7 +183,11 @@ func (dr *DigestRequest) executeRequest(authString string) (*http.Response, erro
 	tr := &http.Transport{
 		DialTLS: func(network, addr string) (net.Conn, error) {
 			return tls.DialWithDialer(&net.Dialer{Timeout: dr.Timeout}, network, addr,
-				&tls.Config{MaxVersion: tls.VersionTLS10, InsecureSkipVerify: true})
+				&tls.Config{
+					MinVersion: tls.VersionTLS12,
+					MaxVersion: tls.VersionTLS12,
+					//	MaxVersion: tls.VersionTLS10,
+					InsecureSkipVerify: true})
 		},
 		IdleConnTimeout: 5 * time.Second,
 		DialContext: (&net.Dialer{
@@ -193,7 +209,12 @@ func (dr *DigestRequest) executeRequest(authString string) (*http.Response, erro
 		}
 		tr.DialTLS = func(network, addr string) (net.Conn, error) {
 			return tls.DialWithDialer(&net.Dialer{Timeout: dr.Timeout}, network, addr,
-				&tls.Config{MaxVersion: tls.VersionTLS10, InsecureSkipVerify: false, RootCAs: roots})
+				&tls.Config{
+					MinVersion: tls.VersionTLS12,
+					MaxVersion: tls.VersionTLS12,
+					//	MaxVersion: tls.VersionTLS10,
+					InsecureSkipVerify: false,
+					RootCAs:            roots})
 		}
 	}
 

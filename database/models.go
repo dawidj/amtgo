@@ -139,3 +139,14 @@ type emberOptionset struct {
 type singleOptionset struct {
 	Optionset emberOptionset `json:"optionset"`
 }
+
+type Laststate struct {
+	ID          int    `json:"id" db:"id"`
+	HostID      int    `json:"host_id" db:"host_id"`
+	Hostname    string `json:"hostname"  db:"hostname"`
+	StateBegin  int    `json:"state_begin" db:"state_begin"`
+	OpenPort    int    `json:"open_port" db:"open_port"`
+	StateAMT    int    `json:"state_amt" db:"state_amt"`
+	StateHTTP   int    `json:"state_http" db:"state_http"`
+	Usermessage string `json:"usermessage" db:"usermessage"` // amtgo only
+}
