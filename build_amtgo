@@ -1,0 +1,3 @@
+GOOS=windows GOARCH=amd64 go build -o _bin/amtgo_win_amd64.exe;
+GOOS=linux GOARCH=amd64 go build -o _bin/amtgo_linux_amd64;
+GOOS=darwin GOARCH=arm64 go build -o _bin/amtgo_darwin_arm64
