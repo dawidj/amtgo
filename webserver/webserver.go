@@ -19,8 +19,8 @@ import (
 	"github.com/gorilla/securecookie"
 	"github.com/gorilla/sessions"
 
-	"amtgo/database"
-	"amtgo/scheduler"
+	"github.com/dawidj/amtgo/database"
+	"github.com/dawidj/amtgo/scheduler"
 )
 
 type assetInfo struct {

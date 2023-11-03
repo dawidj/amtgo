@@ -13,8 +13,8 @@ import (
 	"sync"
 	"time"
 
-	"amtgo/amt"
-	"amtgo/database"
+	"github.com/dawidj/amtgo/amt"
+	"github.com/dawidj/amtgo/database"
 )
 
 // Ember submits Jobs differently from database.Job model. Work-around:

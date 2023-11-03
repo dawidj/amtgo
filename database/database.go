@@ -13,7 +13,7 @@ import (
 	// import MySQL driver
 	_ "github.com/go-sql-driver/mysql"
 
-	"amtgo/amt"
+	"github.com/dawidj/amtgo/amt"
 )
 
 var db *sqlx.DB

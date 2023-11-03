@@ -6,7 +6,7 @@ import (
 	"os"
 	"testing"
 
-	"amtgo/database"
+	"github.com/dawidj/amtgo/database"
 )
 
 func TestCreateUser(t *testing.T) {

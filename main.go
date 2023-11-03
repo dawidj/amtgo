@@ -9,10 +9,10 @@ import (
 
 	"github.com/urfave/cli/v2"
 
-	"amtgo/amt"
-	"amtgo/database"
-	"amtgo/scheduler"
-	"amtgo/webserver"
+	"github.com/dawidj/amtgo/amt"
+	"github.com/dawidj/amtgo/database"
+	"github.com/dawidj/amtgo/scheduler"
+	"github.com/dawidj/amtgo/webserver"
 )
 
 // AppVersion is defined at build time using ldflags

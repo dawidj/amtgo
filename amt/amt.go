@@ -9,7 +9,7 @@ import (
 	"strconv"
 	"time"
 
-	dac "amtgo/amt/digest_auth_client"
+	dac "github.com/dawidj/amtgo/amt/digest_auth_client"
 )
 
 // Verbose bool controls verbosity

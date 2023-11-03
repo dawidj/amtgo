@@ -11,7 +11,7 @@ import (
 	"testing"
 	"time"
 
-	"amtgo/database"
+	"github.com/dawidj/amtgo/database"
 )
 
 func init() {

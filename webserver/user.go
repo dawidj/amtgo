@@ -9,7 +9,8 @@ import (
 	"strings"
 	"syscall"
 
-	"amtgo/database"
+	"github.com/dawidj/amtgo/database"
+
 	"golang.org/x/crypto/scrypt"
 	"golang.org/x/crypto/ssh/terminal"
 )
